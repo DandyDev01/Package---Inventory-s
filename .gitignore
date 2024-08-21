@@ -1,7 +1,9 @@
 # Ignore Everything
 /*
+/Assets/Utilities
+/Assets/TextMesh Pro
 
 # Except for these:
 !/.gitignore
-!/Assets/Inventorys
+!/Assets
 !/ProjectSettings
