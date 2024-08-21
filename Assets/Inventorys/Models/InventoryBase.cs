@@ -7,20 +7,23 @@ namespace Inventorys
 {
 	public abstract class InventoryBase : MonoBehaviour
 	{
-		protected List<InventoryItemData> _items;
-		
-		public IReadOnlyCollection<InventoryItemData> Items => _items;
+		[SerializeField] protected int _stackLimit = 10;
+		[SerializeField] protected bool _enforeStackLimit = false;
 
-		public Action<InventoryItemData> OnAddItem;
-		public Action<InventoryItemData> OnRemoveItem;
+		protected List<InventoryItem> _items;
+
+		public IReadOnlyCollection<InventoryItem> Items => _items;
+
+		public Action<InventoryItem> OnAddItem;
+		public Action<InventoryItem> OnRemoveItem;
 		public Action OnChange;
 
 		protected virtual void Awake()
 		{
-			_items = new List<InventoryItemData>();
+			_items = new List<InventoryItem>();
 		}
 
-		public abstract bool AddItem(InventoryItemData item);
+		public abstract bool AddItem(InventoryItem item);
 
 		public bool RemoveItem(InventoryItemData item)
 		{
@@ -32,7 +35,7 @@ namespace Inventorys
 			if (index >= _items.Count || index < 0)
 				return false;
 
-			InventoryItemData removedItem = _items[index]; 
+			InventoryItem removedItem = _items[index]; 
 			_items.RemoveAt(index);
 
 			OnRemoveItem?.Invoke(removedItem);
@@ -44,14 +47,14 @@ namespace Inventorys
 		public bool RemoveItemByID(int id)
 		{
 			if (_items.Any() == false || _items.Any(x => x.ID == id)
-				|| id <= InventoryItemData.NULLID)
+				|| id <= InventoryItem.NULLID)
 			{
 				return false;
 			}
 
-			InventoryItemData[] items = _items.Where(x => x.ID == id).ToArray();
+			InventoryItem[] items = _items.Where(x => x.ID == id).ToArray();
 
-			InventoryItemData removedItem = items.First();
+			InventoryItem removedItem = items.First();
 			_items.Remove(removedItem);
 
 			OnRemoveItem?.Invoke(removedItem);
@@ -60,19 +63,18 @@ namespace Inventorys
 			return true;
 		}
 
-		public void MoveItem(InventoryItemData item, int index)
+		public void MoveItem(InventoryItem item, int index)
 		{
 			if (index >= _items.Count)
 				return;
 
 			int indexOfItemToMove = _items.IndexOf(item);
-			InventoryItemData itemAtIndex = _items[index];
-			InventoryItemData temp = itemAtIndex;
+			InventoryItem itemAtIndex = _items[index];
+			InventoryItem temp = itemAtIndex;
 			_items[index] = item;
 			_items[indexOfItemToMove] = itemAtIndex;
 
 			OnChange?.Invoke();
 		}
 	}
-
 }

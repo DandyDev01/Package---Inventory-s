@@ -10,9 +10,9 @@ public class ItemContainer : MonoBehaviour
 	private Image _icon;
 	private TextMeshProUGUI _name;
 	private TextMeshProUGUI _itemCount;
-	private InventoryItemData _itemData;
+	private InventoryItem _itemData;
 	
-	public InventoryItemData ItemData => _itemData;
+	public InventoryItem ItemData => _itemData;
 	public ButtonClickedEvent onClick => _button.onClick;
 	public int Index { get; set; }
 
@@ -35,7 +35,7 @@ public class ItemContainer : MonoBehaviour
 		_itemCount = transform.GetChild(2).GetComponent<TextMeshProUGUI>();
 	}
 
-	public void SetDataContext(InventoryItemData itemData)
+	public void SetDataContext(InventoryItem itemData)
 	{
 		if (itemData is null)
 		{

@@ -8,7 +8,10 @@ public class AddItem : MonoBehaviour
 	private void Update()
 	{
 		if (Input.GetKeyDown(KeyCode.Space))
-			_controller.Inventory.AddItem(_items.RandomElement());
+		{
+			Debug.Log("Press");
+  			_controller.Inventory.AddItem(new InventoryItem(_items.RandomElement()));
+		}
 
 
 	}

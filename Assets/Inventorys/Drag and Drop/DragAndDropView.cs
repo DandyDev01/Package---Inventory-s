@@ -13,11 +13,11 @@ public class DragAndDropView : MonoBehaviour
     private List<ItemContainer> _items;
     private RectTransform _container;
     private ItemContainer _selectedContainer;
-    private InventoryItemData _selectedItemData;
+    private InventoryItem _selectedItemData;
     private bool _itemSelected;
     private Vector3 _offset;
 
-    public Action<InventoryItemData, int> OnMoveItem;
+    public Action<InventoryItem, int> OnMoveItem;
 
 	private void Awake()
 	{
@@ -37,11 +37,11 @@ public class DragAndDropView : MonoBehaviour
         }
 	}
 
-    public void Refresh(IReadOnlyCollection<InventoryItemData> data)
+    public void Refresh(IReadOnlyCollection<InventoryItem> data)
     {
         Clear();
 
-        foreach (InventoryItemData item in data) 
+        foreach (InventoryItem item in data) 
         {
             AddItem(item);
         }
@@ -58,7 +58,7 @@ public class DragAndDropView : MonoBehaviour
         }
     }
 
-	public void AddItem(InventoryItemData item)
+	public void AddItem(InventoryItem item)
     {
         ItemContainer newItem = Instantiate(_itemContainerTemplate, _container);
         newItem.SetDataContext(item);
@@ -95,7 +95,7 @@ public class DragAndDropView : MonoBehaviour
 		
 	}
 
-	public void RemoveItem(InventoryItemData item)
+	public void RemoveItem(InventoryItem item)
     {
         ItemContainer removedItem = _items.Where(x => x.ItemID == item.ID).First();
 
