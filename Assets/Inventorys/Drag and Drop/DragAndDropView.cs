@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -13,9 +14,15 @@ public class DragAndDropView : MonoBehaviour
     private RectTransform _container;
     private ItemContainer _selectedContainer;
     private InventoryItemData _selectedItemData;
+    private bool _itemSelected;
+    private Vector3 _offset;
+
+    public Action<InventoryItemData, int> OnMoveItem;
 
 	private void Awake()
 	{
+        _offset = new Vector3(-1, -1);
+        _selectedItemTransfrom.gameObject.layer = 2;
         _selectedItemTransfrom.gameObject.SetActive(false);
         _selectedItemRenderer = _selectedItemTransfrom.GetComponent<Image>();
         _items = new List<ItemContainer>();
@@ -24,32 +31,71 @@ public class DragAndDropView : MonoBehaviour
 
 	private void Update()
 	{
-        if (_selectedItemTransfrom.gameObject.activeSelf)
+        if (_selectedItemTransfrom.gameObject.activeSelf && _itemSelected == true)
         {
-            _selectedItemTransfrom.position = Input.mousePosition;
+            _selectedItemTransfrom.position = Input.mousePosition + _offset * 100;
         }
 	}
+
+    public void Refresh(IReadOnlyCollection<InventoryItemData> data)
+    {
+        Clear();
+
+        foreach (InventoryItemData item in data) 
+        {
+            AddItem(item);
+        }
+    }
+
+    public void Clear()
+    {
+        ItemContainer[] items = _items.ToArray();
+        _items.Clear();
+
+        for (int i = 0; i < items.Length; i++)
+        {
+            Destroy(items[i].gameObject);   
+        }
+    }
 
 	public void AddItem(InventoryItemData item)
     {
         ItemContainer newItem = Instantiate(_itemContainerTemplate, _container);
         newItem.SetDataContext(item);
+        newItem.Index = _items.Count;
 
         newItem.onClick.AddListener(delegate
         {
+            if (_itemSelected)
+            {
+                OnMoveItem?.Invoke(_selectedItemData, newItem.Index);
+                _selectedItemTransfrom.gameObject.SetActive(false);
+                _selectedContainer = null;
+                _selectedItemData = null;
+                _itemSelected = false;
+                return;
+            }
+
             _selectedContainer = newItem;
 			_selectedContainer.HideItem();
             _selectedItemData = newItem.ItemData;
 
+            _itemSelected = true;
 
             _selectedItemTransfrom.gameObject.SetActive(true);
             _selectedItemRenderer.sprite = _selectedItemData.Icon;
+            
         });
 
         _items.Add(newItem);
     }
 
-    public void RemoveItem(InventoryItemData item)
+	private void SwitchItems(ItemContainer newItem)
+	{
+		
+	}
+
+	public void RemoveItem(InventoryItemData item)
     {
         ItemContainer removedItem = _items.Where(x => x.ItemID == item.ID).First();
 

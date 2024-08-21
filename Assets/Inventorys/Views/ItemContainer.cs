@@ -11,9 +11,10 @@ public class ItemContainer : MonoBehaviour
 	private TextMeshProUGUI _name;
 	private TextMeshProUGUI _itemCount;
 	private InventoryItemData _itemData;
-
+	
 	public InventoryItemData ItemData => _itemData;
 	public ButtonClickedEvent onClick => _button.onClick;
+	public int Index { get; set; }
 
 	public int ItemID
 	{

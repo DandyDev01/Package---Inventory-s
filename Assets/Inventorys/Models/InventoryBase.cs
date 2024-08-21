@@ -9,6 +9,8 @@ namespace Inventorys
 	{
 		protected List<InventoryItemData> _items;
 		
+		public IReadOnlyCollection<InventoryItemData> Items => _items;
+
 		public Action<InventoryItemData> OnAddItem;
 		public Action<InventoryItemData> OnRemoveItem;
 		public Action OnChange;
@@ -58,10 +60,10 @@ namespace Inventorys
 			return true;
 		}
 
-		public bool MoveItem(InventoryItemData item, int index)
+		public void MoveItem(InventoryItemData item, int index)
 		{
 			if (index >= _items.Count)
-				return false;
+				return;
 
 			int indexOfItemToMove = _items.IndexOf(item);
 			InventoryItemData itemAtIndex = _items[index];
@@ -70,8 +72,6 @@ namespace Inventorys
 			_items[indexOfItemToMove] = itemAtIndex;
 
 			OnChange?.Invoke();
-
-			return true;
 		}
 	}
 
