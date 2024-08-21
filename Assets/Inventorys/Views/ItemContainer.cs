@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using static UnityEngine.UI.Button;
+using System;
 
 public class ItemContainer : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class ItemContainer : MonoBehaviour
 	private TextMeshProUGUI _itemCount;
 	private InventoryItemData _itemData;
 
+	public InventoryItemData ItemData => _itemData;
 	public ButtonClickedEvent onClick => _button.onClick;
 
 	public int ItemID
@@ -47,5 +49,15 @@ public class ItemContainer : MonoBehaviour
 		_icon.sprite = itemData.Icon;
 		_name.text = itemData.Name;
 		_itemCount.text = itemData.Count.ToString();
+	}
+
+	public void HideItem()
+	{
+		Transform[] children = transform.GetChildren();
+
+		foreach (Transform child in children)
+		{
+			child.gameObject.SetActive(false);
+		}
 	}
 }
