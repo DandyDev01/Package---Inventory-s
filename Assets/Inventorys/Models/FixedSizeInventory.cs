@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 namespace Inventorys
@@ -8,13 +9,20 @@ namespace Inventorys
 
 		public override bool AddItem(InventoryItemData item)
 		{
-			if (_items.Contains(item) || _items.Contains(x => x.ID == item.ID)) 
-				return false;
-
 			if (_items.Count + 1 > _maxItemsCount)
 				return false;
 
-			_items.Add(item);
+
+			if (_items.Contains(x => x.ID == item.ID))
+			{
+				InventoryItemData i = _items.Where(x => x.ID == item.ID).First();
+				if (i.Stackable)
+					i.Count += 1;
+			}
+			else
+			{
+				_items.Add(item);
+			}
 
 			OnAddItem?.Invoke(item);
 			OnChange?.Invoke();
