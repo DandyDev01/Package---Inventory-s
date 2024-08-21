@@ -9,13 +9,28 @@ public class InventoryController : MonoBehaviour
 
 	public InventoryBase Inventory => _inventory;
 
-	private void Start()
+	private void Awake()
+	{
+		_inventoryView.Enable += Connect;
+		_inventoryView.Disable += Disconnect;
+	}
+
+	private void Connect()
 	{
 		_inventory.OnAddItem += _inventoryView.AddItem;
 		_inventory.OnRemoveItem += _inventoryView.RemoveItem;
 		_inventory.OnChange += Refresh;
-
 		_inventoryView.OnMoveItem += _inventory.MoveItem;
+		Refresh();
+	}
+
+	private void Disconnect() 
+	{
+		_inventory.OnAddItem -= _inventoryView.AddItem;
+		_inventory.OnRemoveItem -= _inventoryView.RemoveItem;
+		_inventory.OnChange -= Refresh;
+
+		_inventoryView.OnMoveItem -= _inventory.MoveItem;
 	}
 
 	private void Refresh()
@@ -25,10 +40,6 @@ public class InventoryController : MonoBehaviour
 
 	private void OnDestroy()
 	{
-		_inventory.OnAddItem -= _inventoryView.AddItem;
-		_inventory.OnRemoveItem -= _inventoryView.RemoveItem;
-		_inventory.OnChange -= Refresh;
-
-		_inventoryView.OnMoveItem -= _inventory.MoveItem;
+		Disconnect();
 	}
 }

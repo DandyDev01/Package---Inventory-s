@@ -10,18 +10,13 @@ namespace Inventorys
 		[SerializeField] protected int _stackLimit = 10;
 		[SerializeField] protected bool _enforeStackLimit = false;
 
-		protected List<InventoryItem> _items;
+		protected List<InventoryItem> _items = new List<InventoryItem>();
 
 		public IReadOnlyCollection<InventoryItem> Items => _items;
 
 		public Action<InventoryItem> OnAddItem;
 		public Action<InventoryItem> OnRemoveItem;
 		public Action OnChange;
-
-		protected virtual void Awake()
-		{
-			_items = new List<InventoryItem>();
-		}
 
 		public abstract bool AddItem(InventoryItem item);
 

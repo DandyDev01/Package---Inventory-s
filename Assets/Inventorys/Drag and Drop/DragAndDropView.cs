@@ -17,6 +17,8 @@ public class DragAndDropView : MonoBehaviour
     private bool _itemSelected;
     private Vector3 _offset;
 
+    public Action Enable;
+    public Action Disable;
     public Action<InventoryItem, int> OnMoveItem;
 
 	private void Awake()
@@ -37,7 +39,17 @@ public class DragAndDropView : MonoBehaviour
         }
 	}
 
-    public void Refresh(IReadOnlyCollection<InventoryItem> data)
+	private void OnEnable()
+	{
+        Enable?.Invoke();
+	}
+
+	private void OnDisable()
+	{
+        Disable?.Invoke();
+	}
+
+	public void Refresh(IReadOnlyCollection<InventoryItem> data)
     {
         Clear();
 
