@@ -15,6 +15,11 @@ public class InventoryController : MonoBehaviour
 		_inventoryView.Disable += Disconnect;
 	}
 
+	private void Start()
+	{
+		Refresh();
+	}
+
 	private void Connect()
 	{
 		_inventory.OnAddItem += _inventoryView.AddItem;

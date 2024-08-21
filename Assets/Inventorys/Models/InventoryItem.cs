@@ -24,4 +24,9 @@ public class InventoryItem
 		StackLimit = data.StackLimit;
 	}
 
+	public InventoryItem()
+	{
+		ID = NULLID;
+	}
+
 }

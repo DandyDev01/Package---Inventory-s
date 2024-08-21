@@ -6,13 +6,37 @@ namespace Inventorys
 	public class FixedSizeInventory : InventoryBase
 	{
 		[SerializeField] private int _maxItemsCount = 15;
+		private int _itemCount = 0;
+		private int _nearestEmpty = 0;
+
+		public void Awake()
+		{
+			for (int i = 0; i < _maxItemsCount; i++)
+			{
+				AddItem(new InventoryItem());
+			}
+		}
 
 		public override bool AddItem(InventoryItem item)
 		{
-			if (_items.Count + 1 > _maxItemsCount)
+			if (_itemCount >= _maxItemsCount)
 				return false;
 
-			
+			if (item.ID == InventoryItem.NULLID)
+			{
+				_items.Add(item);
+				return false;
+			}
+
+			for (int i = 0; i < _maxItemsCount; i++)
+			{
+				if (_items[i].ID == InventoryItem.NULLID)
+				{
+					_nearestEmpty = i;
+					break;
+				}
+			}
+
 			if (_items.Contains(x => x.ID == item.ID))
 			{
 				InventoryItem i = _items.Where(x => x.ID == item.ID).First();
@@ -29,7 +53,8 @@ namespace Inventorys
 				else
 				{
 					item.Count = 1;
-					_items.Add(item);
+					_items[_nearestEmpty] = item;
+					_itemCount += 1;
 
 					OnAddItem?.Invoke(item);
 				}
@@ -40,7 +65,8 @@ namespace Inventorys
 			}
 
 			item.Count = 1;
-			_items.Add(item);
+			_items[_nearestEmpty] = item;
+			_itemCount += 1;
 
 			OnAddItem?.Invoke(item);
 			OnChange?.Invoke();
