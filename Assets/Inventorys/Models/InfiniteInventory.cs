@@ -1,4 +1,3 @@
-using Inventorys;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,22 +5,8 @@ using UnityEngine;
 
 namespace Inventorys
 {
-	public class WeightCapInventory : InventoryBase
+	public class InfiniteInventory : InventoryBase
 	{
-		[SerializeField] private float _maxWeight = 10;
-		private float _currentWeight;
-
-		protected override bool CanAdd(InventoryItem item)
-		{
-			bool isOverWight = _currentWeight + item.Weight > _maxWeight;
-			bool isNullItem = item.ID == InventoryItem.NULLID;
-
-			if (isOverWight || isNullItem)
-				return false;
-
-			return true;
-		}
-
 		public override bool AddItem(InventoryItem item)
 		{
 			if (CanAdd(item) == false)
@@ -54,6 +39,12 @@ namespace Inventorys
 			OnAddItem?.Invoke(item);
 			OnChange?.Invoke();
 
+			return true;
+
+		}
+
+		protected override bool CanAdd(InventoryItem item)
+		{
 			return true;
 		}
 	}

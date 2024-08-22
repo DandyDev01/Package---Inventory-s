@@ -18,6 +18,21 @@ namespace Inventorys
 		public Action<InventoryItem> OnRemoveItem;
 		public Action OnChange;
 
+		protected abstract bool CanAdd(InventoryItem item);
+
+		protected int GetNearestEmptyIndex()
+		{
+			for (int i = 0; i < _items.Count; i++)
+			{
+				if (_items[i].ID == InventoryItem.NULLID)
+				{
+					return i;
+				}
+			}
+
+			return -1;
+		}
+
 		public abstract bool AddItem(InventoryItem item);
 
 		public bool RemoveItem(InventoryItemData item)

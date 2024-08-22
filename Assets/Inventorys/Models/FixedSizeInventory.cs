@@ -16,7 +16,7 @@ namespace Inventorys
 			}
 		}
 
-		public override bool AddItem(InventoryItem item)
+		protected override bool CanAdd(InventoryItem item)
 		{
 			if (_itemCount >= _maxItemsCount || (_items.Count + 1 > _maxItemsCount && item.ID == InventoryItem.NULLID))
 				return false;
@@ -26,6 +26,14 @@ namespace Inventorys
 				_items.Add(item);
 				return true;
 			}
+
+			return false;
+		}
+
+		public override bool AddItem(InventoryItem item)
+		{
+			if (CanAdd(item) == false)
+				return false;
 
 			if (_items.Contains(x => x.ID == item.ID && x.Stackable))
 			{
@@ -56,19 +64,6 @@ namespace Inventorys
 			OnChange?.Invoke();
 
 			return true;
-		}
-
-		private int GetNearestEmptyIndex()
-		{
-			for (int i = 0; i < _maxItemsCount; i++)
-			{
-				if (_items[i].ID == InventoryItem.NULLID)
-				{
-					return i;
-				}
-			}
-
-			return -1;
 		}
 	}
 }
