@@ -8,7 +8,7 @@ namespace Inventorys
 		[SerializeField] private int _maxItemsCount = 15;
 		private int _itemCount = 0;
 
-		public int Count => _itemCount;
+		public new int Count => _itemCount;
 
 		public void Awake()
 		{

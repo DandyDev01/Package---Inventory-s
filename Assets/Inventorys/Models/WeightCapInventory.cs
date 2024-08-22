@@ -6,14 +6,28 @@ namespace Inventorys
 	public class WeightCapInventory : InventoryBase
 	{
 		[SerializeField] private float _maxWeight = 10;
-		private float _currentWeight;
+
+		public float CurrentWeight => CalculateWeight();
+
+		private float CalculateWeight()
+		{
+			float weight = 0;
+
+			foreach (var item in _items)
+			{
+				weight += item.Weight;
+			}
+
+			return weight;
+		}
 
 		protected override bool CanAdd(InventoryItem item)
 		{
-			bool isOverWight = _currentWeight + item.Weight > _maxWeight;
+			bool isOverWight = CurrentWeight + item.Weight > _maxWeight;
 			bool isNullItem = item.ID == InventoryItem.NULLID;
+			bool contains = _items.Contains(item);
 
-			if (isOverWight || isNullItem)
+			if (isOverWight || isNullItem || contains)
 				return false;
 
 			return true;
@@ -34,16 +48,12 @@ namespace Inventorys
 					if (i.Count < stackLimit)
 					{
 						i.Count += 1;
+						i.Weight += item.Weight;
 						OnChange?.Invoke();
 						return true;
 					}
 				}
 			}
-
-			int nearestEmptyIndex = GetNearestEmptyIndex();
-
-			if (nearestEmptyIndex == -1)
-				return false;
 
 			item.Count = 1;
 			_items.Add(item);

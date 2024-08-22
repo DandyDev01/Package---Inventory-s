@@ -13,6 +13,7 @@ namespace Inventorys
 		protected List<InventoryItem> _items = new List<InventoryItem>();
 
 		public IReadOnlyCollection<InventoryItem> Items => _items;
+		public int Count => _items.Count;
 
 		public Action<InventoryItem> OnAddItem;
 		public Action<InventoryItem> OnRemoveItem;
