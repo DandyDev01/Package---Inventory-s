@@ -1,12 +1,16 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Inventory's/ItemData")]
-public class InventoryItemData : ScriptableObject
+namespace Inventorys
 {
-	public Sprite Icon;
-	public string Name;
-	public string Description;
-	public int ID;
-	public int StackLimit = 10;	
-	public bool Stackable;
+	[CreateAssetMenu(menuName = "Inventory's/ItemData")]
+	public class InventoryItemData : ScriptableObject
+	{
+		public Sprite Icon;
+		public string Name;
+		public string Description;
+		public int ID;
+		public int StackLimit = 10;
+		public bool Stackable;
+	}
+
 }

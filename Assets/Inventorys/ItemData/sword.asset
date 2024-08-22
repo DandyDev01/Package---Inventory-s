@@ -15,6 +15,6 @@ MonoBehaviour:
   Icon: {fileID: 0}
   Name: sword
   Description: 
-  Count: 14
   ID: 342
+  StackLimit: 10
   Stackable: 1
