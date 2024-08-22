@@ -86,5 +86,11 @@ namespace Inventorys
 
 			OnChange?.Invoke();
 		}
+
+		public void EnforeStacklimit(bool b, int limit = 1)
+		{
+			_enforeStackLimit = b;
+			_stackLimit = limit;
+		}
 	}
 }

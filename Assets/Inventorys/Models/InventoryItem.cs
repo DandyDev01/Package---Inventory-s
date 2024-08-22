@@ -9,11 +9,11 @@ namespace Inventorys
 		public Sprite Icon;
 		public string Name;
 		public string Description;
+		public float Weight;
 		public int Count;
 		public int StackLimit = 10;
 		public int ID;
 		public bool Stackable;
-		public float Weight;
 
 
 		public InventoryItem(InventoryItemData data)

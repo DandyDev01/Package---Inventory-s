@@ -8,6 +8,8 @@ namespace Inventorys
 		[SerializeField] private int _maxItemsCount = 15;
 		private int _itemCount = 0;
 
+		public int Count => _itemCount;
+
 		public void Awake()
 		{
 			for (int i = 0; i < _maxItemsCount; i++)
@@ -27,13 +29,19 @@ namespace Inventorys
 				return true;
 			}
 
-			return false;
+			return true;
 		}
 
 		public override bool AddItem(InventoryItem item)
 		{
-			if (CanAdd(item) == false)
+			if (_itemCount >= _maxItemsCount || (_items.Count + 1 > _maxItemsCount && item.ID == InventoryItem.NULLID))
 				return false;
+
+			if (item.ID == InventoryItem.NULLID)
+			{
+				_items.Add(item);
+				return true;
+			}
 
 			if (_items.Contains(x => x.ID == item.ID && x.Stackable))
 			{
