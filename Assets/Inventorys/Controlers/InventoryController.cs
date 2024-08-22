@@ -1,5 +1,3 @@
-using Inventorys;
-using System;
 using UnityEngine;
 
 namespace Inventorys

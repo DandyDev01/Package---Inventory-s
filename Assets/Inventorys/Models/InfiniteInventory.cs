@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 namespace Inventorys
 {
@@ -40,7 +37,6 @@ namespace Inventorys
 			OnChange?.Invoke();
 
 			return true;
-
 		}
 
 		protected override bool CanAdd(InventoryItem item)
