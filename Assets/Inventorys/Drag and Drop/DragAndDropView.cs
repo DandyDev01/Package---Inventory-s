@@ -102,11 +102,6 @@ public class DragAndDropView : MonoBehaviour
         _items.Add(newItem);
     }
 
-	private void SwitchItems(ItemContainer newItem)
-	{
-		
-	}
-
 	public void RemoveItem(InventoryItem item)
     {
         ItemContainer removedItem = _items.Where(x => x.ItemID == item.ID).First();
